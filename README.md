@@ -1,7 +1,7 @@
 # audio-recorder
-Simple Linux audio recorder using GStreamer 
+Linux audio recorder using GStreamer 
 
-Records 10 seconds of audio from the default input device on the pi.  Tested on Raspberry Pi OS with pi zero w.
+Records 10 seconds of audio data to file from the default input device on the pi.  Tested on Raspberry Pi OS with pi zero w.
 
 Assumes setup of:
 
