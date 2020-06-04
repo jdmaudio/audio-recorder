@@ -16,7 +16,10 @@ pkg-config --cflags --libs gstreamer-1.0
 ```
 
 Could run the following to see if GStreamer is able to start a pipeline:
+
+```console
 gst-launch-1.0 -e -v alsasrc !  audio/x-raw,rate=8000 ! wavenc ! filesink location=output.wav
+```
 
 Compile and run:
 
