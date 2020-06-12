@@ -25,8 +25,8 @@ cat /proc/asound/cards
 and then edit /etc/asound.conf with following:
 
 ```console
-   defaults.pcm.card 1
-   defaults.ctl.card 1
+defaults.pcm.card 1
+defaults.ctl.card 1
 ```
 Replace "1" with number of your card determined above.
 
@@ -42,7 +42,7 @@ gst-launch-1.0 -e -v alsasrc !  audio/x-raw,rate=8000 ! wavenc ! filesink locati
 
 Compile and run:
 
-```
+```console
 gcc audio-record.c -o audio-record.o `pkg-config --cflags --libs gstreamer-1.0`
 ./audio-record.o
 ```
