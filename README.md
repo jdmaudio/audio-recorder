@@ -15,6 +15,21 @@ sudo apt-get install libgstreamer1.0-dev
 pkg-config --cflags --libs gstreamer-1.0
 ```
 
+Check audio device:
+
+
+```console
+cat /proc/asound/cards
+```
+
+and then edit /etc/asound.conf with following:
+
+```console
+   defaults.pcm.card 1
+   defaults.ctl.card 1
+```
+Replace "1" with number of your card determined above.
+
 Could run the following to see if GStreamer is able to start a pipeline:
 
 ```console
