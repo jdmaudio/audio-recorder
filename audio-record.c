@@ -1,5 +1,8 @@
 #include <gst/gst.h>
 #include <glib.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <getopt.h>
 
 /* Forward definition for the message handling*/
 static gboolean bus_call (GstBus *bus, GstMessage *msg, gpointer data);
@@ -9,6 +12,8 @@ static gboolean timerfun(GstElement *pipeline);
 /* Main function for audio pipeline initialization and looping streaming process  */
 int
 main (int argc, char *argv[]) {
+
+    extern char *optarg; extern int optind;
     GMainLoop *loop;
     GstElement *pipeline, *audio_source, *wav_enc, *filesink; 
     GstBus *bus;
@@ -16,14 +21,36 @@ main (int argc, char *argv[]) {
     GstCaps *caps;
     gboolean ret;
 
+    char* fname;
+    int rectime = 2;
+
+    int c = 0;
+    int tflag = 0, fflag = 0;
+
+    while ((c = getopt(argc, argv, "t:f:")) != -1)
+    switch (c) {
+    case 'f':
+	fname = optarg;
+        fflag = 1;
+        break;
+    case 't':
+        rectime = atoi(optarg);
+        tflag = 1;
+    }
+
+    if (fflag == 0) {
+    	fprintf(stderr, "%s: missing -f option\n", argv[0]);
+        exit(1);
+    }
+
     /* Initialization of gstreamer */
-    gst_init (&argc, &argv);
+    gst_init (NULL, NULL);
     loop = g_main_loop_new (NULL, FALSE);
 
     /* Elements creation */
     pipeline     = gst_pipeline_new ("audio_stream");
     audio_source = gst_element_factory_make ("alsasrc", "audio_source");
-    wav_enc		 = gst_element_factory_make ("wavenc", "wav_encoder");
+    wav_enc      = gst_element_factory_make ("wavenc", "wav_encoder");
     filesink     = gst_element_factory_make ("filesink", "file_sink");
 
     if (!pipeline) {
@@ -43,9 +70,9 @@ main (int argc, char *argv[]) {
         return -1;
     }
 
-	/* Sets properties on source and sink */
+    /* Sets properties on source and sink */
     g_object_set (G_OBJECT (audio_source), "device", "default", NULL);
-    g_object_set (G_OBJECT (filesink), "location", "output.wav", NULL);
+    g_object_set (G_OBJECT (filesink), "location", fname, NULL);
 
 	/* Add a bus watch, so we get notified when a message arrives */
     bus = gst_pipeline_get_bus (GST_PIPELINE (pipeline));
@@ -75,8 +102,10 @@ main (int argc, char *argv[]) {
 		return FALSE;
 	}
 
+	g_print("Record time set to: %i seconds \n",rectime);
+
 	/* Set record timer running */
-	g_timeout_add (5000,(GSourceFunc)timerfun, pipeline);
+	g_timeout_add (1000*rectime,(GSourceFunc)timerfun, pipeline);
 	
     g_print ("streaming...\n");
     g_main_loop_run (loop);
