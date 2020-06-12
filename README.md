@@ -1,7 +1,5 @@
 # audio-recorder
-Linux audio recorder using GStreamer 
-
-https://gstreamer.freedesktop.org/documentation/tools/gst-launch.html?gi-language=c 
+Linux audio recorder using GStreamer: https://gstreamer.freedesktop.org/documentation/tools/gst-launch.html?gi-language=c 
 
 Records audio to file from the default input device. Tested on pi zero w running Raspberry Pi OS.
 
