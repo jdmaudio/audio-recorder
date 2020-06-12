@@ -15,7 +15,7 @@ sudo apt-get install libgstreamer1.0-dev
 pkg-config --cflags --libs gstreamer-1.0
 ```
 
-Check audio device:
+You may have to check audio device and ensure you have the right input device for recording:
 
 
 ```console
@@ -35,6 +35,10 @@ Could run the following to see if GStreamer is able to start a pipeline:
 ```console
 gst-launch-1.0 -e -v alsasrc !  audio/x-raw,rate=8000 ! wavenc ! filesink location=output.wav
 ```
+
+Changing default device can be done - follow steps here:
+https://superuser.com/questions/626606/how-to-make-alsa-pick-a-preferred-sound-device-automatically
+
 
 Compile and run:
 
